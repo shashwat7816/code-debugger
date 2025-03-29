@@ -1,0 +1,12 @@
+*# Ignore system files
+NTUSER.DAT*
+ntuser.ini
+.VirtualBox/
+.arduinoIDE/
+.vscode/
+.ssh/
+OneDrive/
+Documents/
+Downloads/
+Music/
+Videos/
