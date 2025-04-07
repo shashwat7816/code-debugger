@@ -17,7 +17,7 @@ A desktop application that helps developers debug code using Google's Gemini AI.
 🧰 Tech Stack
 Python 3.8+
 
-tkinter for GUI
+Tkinter for GUI
 
 google.generativeai for Gemini integration
 
