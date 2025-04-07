@@ -48,7 +48,7 @@ Create an API key from the API Access section
 
 Copy it and paste it in the code:
 
-python
+Python
 Copy
 Edit
 GOOGLE_API_KEY = "your-api-key-here"
