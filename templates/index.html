@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Guardian - AI Debugging Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --text-color: #2d3748;
+            --button-color: #4361ee;
+            --input-bg: #ffffff;
+            --input-text: #212529;
+            --accent-color: #4f46e5;
+            --divider-color: #cbd5e0;
+            --user-msg-color: #047857;
+            --bot-msg-color: #b45309;
+            --highlight-color: #06b6d4;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+            --secondary-bg: #e2e8f0;
+            --title-bg: #dbeafe;
+            --bot-code-color: #1e40af;
+            --bot-heading-color: #b45309;
+            --bot-explanation-color: #374151;
+            --bot-success-color: #065f46;
+            --bot-error-color: #991b1b;
+            --bot-highlight-color: #4f46e5;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        .app-title {
+            background-color: var(--title-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .app-title h1 {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .content-area {
+            background-color: var(--bg-color);
+            border: 1px solid var(--divider-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .chat-history {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--divider-color);
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-message {
+            color: var(--user-msg-color);
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+        }
+
+        .bot-message {
+            color: var(--bot-msg-color);
+            margin-bottom: 1.5rem;
+            white-space: pre-wrap;
+        }
+
+        .code-block {
+            background-color: #f8fafc;
+            color: var(--bot-code-color);
+            font-family: 'Consolas', monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--divider-color);
+            margin: 1rem 0;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .error {
+            color: var(--bot-error-color);
+            font-weight: bold;
+        }
+
+        .success {
+            color: var(--bot-success-color);
+            font-weight: bold;
+        }
+
+        .code-input {
+            font-family: 'Consolas', monospace;
+            min-height: 200px;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            border: 1px solid var(--divider-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            background-color: var(--secondary-bg);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-debug {
+            background-color: #059669;
+            color: white;
+            font-weight: bold;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-debug:hover {
+            background-color: #047857;
+        }
+
+        .btn-debug[data-mode="Performance Analysis"] {
+            background-color: #0369a1;
+        }
+        
+        .btn-debug[data-mode="Performance Analysis"]:hover {
+            background-color: #075985;
+        }
+        
+        .btn-debug[data-mode="Security Review"] {
+            background-color: #b91c1c;
+        }
+        
+        .btn-debug[data-mode="Security Review"]:hover {
+            background-color: #991b1b;
+        }
+        
+        .btn-debug[data-mode="Code Explanation"] {
+            background-color: #9333ea;
+        }
+        
+        .btn-debug[data-mode="Code Explanation"]:hover {
+            background-color: #7e22ce;
+        }
+
+        .divider {
+            border-top: 1px solid var(--divider-color);
+            margin: 1rem 0;
+        }
+
+        .footer {
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- App Title -->
+        <div class="text-center app-title">
+            <h1>🌟 Code Guardian</h1>
+            <p class="lead">AI-Powered Debugging Assistant</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="content-area">
+                    <!-- Chat History -->
+                    <h5 class="mb-3">Debugging Conversation</h5>
+                    <div id="chat-history" class="chat-history">
+                        <div class="bot-message">
+                            <strong>🤖 Code Guardian:</strong><br>
+                            Welcome to Code Guardian! I'm here to help debug and improve your code. Here's how to use me:<br><br>
+                            1. Select your programming language from the dropdown<br>
+                            2. Choose a debugging mode based on your needs<br>
+                            3. Paste your code in the box below<br>
+                            4. Click the debug button to analyze<br><br>
+                            Ready to make your code better!
+                        </div>
+                    </div>
+
+                    <!-- Controls Area -->
+                    <div class="controls">
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="language" class="form-label fw-bold">Programming Language:</label>
+                                <select id="language" class="form-select">
+                                    {% for language in languages %}
+                                    <option value="{{ language }}">{{ language }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="mode" class="form-label fw-bold">Debug Mode:</label>
+                                <select id="mode" class="form-select">
+                                    {% for mode in debug_modes %}
+                                    <option value="{{ mode }}">{{ mode }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <h5 class="mb-3">Your Code:</h5>
+                    <textarea id="code-input" class="form-control code-input" placeholder="Enter your code here..."></textarea>
+
+                    <!-- Action Buttons -->
+                    <div class="text-center my-4">
+                        <button id="clear-btn" class="btn btn-secondary me-3">Clear</button>
+                        <button id="debug-btn" class="btn btn-debug" data-mode="Standard Debugging">DEBUG CODE</button>
+                        <button id="save-btn" class="btn btn-secondary ms-3">💾 Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="mt-3 text-end">
+            <small id="status-bar" class="text-muted">Ready to debug your code</small>
+        </div>
+
+        <div class="footer">
+            <p>Powered by Google Gemini 1.5 Pro</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeInput = document.getElementById('code-input');
+            const debugBtn = document.getElementById('debug-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const chatHistory = document.getElementById('chat-history');
+            const statusBar = document.getElementById('status-bar');
+            const languageSelect = document.getElementById('language');
+            const modeSelect = document.getElementById('mode');
+
+            // Handle debug mode changes
+            modeSelect.addEventListener('change', function() {
+                const mode = this.value;
+                debugBtn.setAttribute('data-mode', mode);
+                
+                // Update button text and color based on mode
+                if (mode === "Standard Debugging") {
+                    debugBtn.textContent = "DEBUG CODE";
+                    debugBtn.style.backgroundColor = "#059669";
+                } else if (mode === "Performance Analysis") {
+                    debugBtn.textContent = "ANALYZE PERFORMANCE";
+                    debugBtn.style.backgroundColor = "#0369a1";
+                } else if (mode === "Security Review") {
+                    debugBtn.textContent = "CHECK SECURITY";
+                    debugBtn.style.backgroundColor = "#b91c1c";
+                } else if (mode === "Code Explanation") {
+                    debugBtn.textContent = "EXPLAIN CODE";
+                    debugBtn.style.backgroundColor = "#9333ea";
+                }
+            });
+
+            // Handle debugging action
+            debugBtn.addEventListener('click', async function() {
+                const code = codeInput.value.trim();
+                if (!code) {
+                    statusBar.textContent = "Please enter some code first";
+                    return;
+                }
+
+                const language = languageSelect.value;
+                const mode = modeSelect.value;
+
+                // Add user message to chat
+                chatHistory.innerHTML += `
+                    <div class="divider"></div>
+                    <div class="user-message">
+                        <strong>🧑‍💻 You (${language}) - ${mode}:</strong><br>
+                        ${code}
+                    </div>
+                `;
+
+                // Update status
+                statusBar.textContent = `Processing your code with ${mode}... Please wait`;
+                
+                // Show loading message
+                chatHistory.innerHTML += `
+                    <div class="bot-message" id="loading-message">
+                        <strong>🤖 Bot:</strong> Analyzing your code (${mode})...
+                    </div>
+                `;
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+
+                try {
+                    // Send request to the backend
+                    const response = await fetch('/api/debug', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            code: code,
+                            language: language,
+                            mode: mode
+                        }),
+                    });
+
+                    const data = await response.json();
+                    
+                    // Remove loading message
+                    const loadingMessage = document.getElementById('loading-message');
+                    if (loadingMessage) {
+                        loadingMessage.remove();
+                    }
+
+                    // Add bot response
+                    chatHistory.innerHTML += `
+                        <div class="bot-message">
+                            <strong>🤖 Bot:</strong><br>
+                            ${data.response}
+                        </div>
+                    `;
+
+                    // Update status
+                    statusBar.textContent = "Ready to debug more code";
+                } catch (error) {
+                    // Handle errors
+                    const loadingMessage = document.getElementById('loading-message');
+                    if (loadingMessage) {
+                        loadingMessage.remove();
+                    }
+
+                    chatHistory.innerHTML += `
+                        <div class="bot-message error">
+                            <strong>🤖 Bot:</strong><br>
+                            Error: Failed to process your request. Please try again.
+                        </div>
+                    `;
+                    statusBar.textContent = "Error occurred during analysis";
+                    console.error('Error:', error);
+                }
+
+                // Scroll to bottom
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            });
+
+            // Clear button functionality
+            clearBtn.addEventListener('click', function() {
+                codeInput.value = '';
+                codeInput.focus();
+            });
+
+            // Save button functionality
+            saveBtn.addEventListener('click', function() {
+                const content = chatHistory.innerText;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const now = new Date();
+                const timestamp = now.toISOString().replace(/[-:\.]/g, '').substring(0, 14);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `debug_session_${timestamp}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                statusBar.textContent = "Session saved to file";
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+Enter to debug
+                if (e.ctrlKey && e.key === 'Enter') {
+                    debugBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
