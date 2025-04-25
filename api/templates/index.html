@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Guardian - AI Debugging Assistant</title>
+    <title>🌟 Code Guardian - AI Debugging Assistant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css">
     <style>
         :root {
             --bg-color: #f0f4f8;
@@ -34,98 +35,204 @@
             color: var(--text-color);
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .app-title {
+        /* Title section styling */
+        .title-frame {
             background-color: var(--title-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px 0;
+            border-bottom: 1px groove #ccc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
         }
 
-        .app-title h1 {
+        .title-frame h1 {
             color: var(--accent-color);
             font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 0;
         }
 
-        .content-area {
+        .title-frame p {
+            font-size: 12px;
+            color: var(--text-color);
+        }
+
+        /* Content frame styling */
+        .content-frame {
             background-color: var(--bg-color);
-            border: 1px solid var(--divider-color);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px ridge #ccc;
+            border-radius: 5px;
+            margin: 5px 20px;
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Decorative header */
+        .header-decoration {
+            height: 5px;
+            background-color: var(--bg-color);
+            margin-bottom: 10px;
+            display: flex;
+        }
+
+        .header-rect {
+            height: 5px;
+            width: 50px;
+            background-color: var(--accent-color);
+            margin-right: 5px;
+        }
+
+        /* History section */
+        .history-section {
+            padding: 3px 5px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
         }
 
         .chat-history {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 1rem;
             background-color: var(--input-bg);
-            border: 1px solid var(--divider-color);
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .user-message {
-            color: var(--user-msg-color);
-            margin-bottom: 1rem;
-            white-space: pre-wrap;
-        }
-
-        .bot-message {
-            color: var(--bot-msg-color);
-            margin-bottom: 1.5rem;
-            white-space: pre-wrap;
-        }
-
-        .code-block {
-            background-color: #f8fafc;
-            color: var(--bot-code-color);
+            border: 1px groove #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
             font-family: 'Consolas', monospace;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--divider-color);
-            margin: 1rem 0;
-            overflow-x: auto;
-            white-space: pre;
+            font-size: 11px;
+            flex-grow: 1;
         }
 
-        .error {
-            color: var(--bot-error-color);
-            font-weight: bold;
+        /* Control panels */
+        .control-panel {
+            background-color: var(--secondary-bg);
+            padding: 5px;
+            border-radius: 3px;
+            margin: 3px 0;
         }
 
-        .success {
-            color: var(--bot-success-color);
+        .control-label {
+            font-size: 11px;
             font-weight: bold;
+            margin-right: 5px;
+            color: var(--text-color);
+        }
+
+        /* Input section */
+        .input-section {
+            padding: 3px 5px;
+            margin-top: 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .entry-container {
+            border: 1px solid var(--text-color);
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            padding: 1px;
+            flex-grow: 1;
+            position: relative;
         }
 
         .code-input {
+            width: 100%;
+            min-height: 150px;
             font-family: 'Consolas', monospace;
-            min-height: 200px;
+            font-size: 11px;
+            padding: 10px;
+            border: none;
             background-color: var(--input-bg);
             color: var(--input-text);
-            border: 1px solid var(--divider-color);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            resize: vertical;
         }
 
-        .controls {
+        .code-input:focus {
+            outline: none;
+        }
+
+        /* Button frame */
+        .button-frame {
             background-color: var(--secondary-bg);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
+            height: 100px;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-decoration {
+            height: 5px;
+            background-color: var(--secondary-bg);
+            margin-bottom: 20px;
+            display: flex;
+            width: 100%;
+        }
+
+        .footer-rect {
+            height: 5px;
+            flex: 1;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Button styling */
+        .btn-action {
+            font-size: 12px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 8px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-debug-container {
+            background-color: #134e4a;
+            padding: 2px;
+            border-radius: 3px;
+            border: 2px solid #134e4a;
+            margin: 0 15px;
         }
 
         .btn-debug {
             background-color: #059669;
             color: white;
+            font-size: 14px;
             font-weight: bold;
-            padding: 0.75rem 2rem;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 3px;
+            padding: 10px 30px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -134,128 +241,281 @@
             background-color: #047857;
         }
 
-        .btn-debug[data-mode="Performance Analysis"] {
-            background-color: #0369a1;
+        /* Status bar */
+        .status-bar {
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            font-size: 9px;
+            text-align: right;
+            padding: 3px 10px;
+            height: 20px;
+        }
+
+        /* Message styling */
+        .user-heading {
+            color: var(--user-msg-color);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .user-message {
+            color: var(--user-msg-color);
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        .bot-heading {
+            color: var(--bot-msg-color);
+            font-weight: bold;
+        }
+
+        .bot-message {
+            color: var(--bot-msg-color);
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        .divider {
+            color: var(--divider-color);
+            margin: 5px 0;
+            border-top: 1px solid var(--divider-color);
+        }
+
+        .separator {
+            color: var(--divider-color);
+            margin: 10px 0;
+            border-top: 1px solid var(--divider-color);
+            border-bottom: 1px solid var(--divider-color);
+            height: 3px;
+        }
+
+        /* Specialized formatting for bot responses */
+        .code-block {
+            background-color: #f8fafc;
+            color: var(--bot-code-color);
+            font-family: 'Consolas', monospace;
+            font-size: 11px;
+            padding: 5px;
+            margin: 5px 0 5px 20px;
+            border: 1px solid var(--divider-color);
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .heading-text {
+            color: var(--bot-heading-color);
+            font-weight: bold;
+            font-size: 11px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .list-item {
+            color: var(--bot-explanation-color);
+            margin-left: 20px;
+        }
+
+        .error-text {
+            color: var(--bot-error-color);
+            font-family: 'Consolas', monospace;
+            font-size: 11px;
+        }
+
+        .success-text {
+            color: var(--bot-success-color);
+            font-family: 'Consolas', monospace;
+            font-size: 11px;
+        }
+
+        /* Mode-specific button colors */
+        .btn-debug[data-mode="Standard Debugging"] {
+            background-color: #059669;
         }
         
-        .btn-debug[data-mode="Performance Analysis"]:hover {
-            background-color: #075985;
+        .btn-debug[data-mode="Performance Analysis"] {
+            background-color: #0369a1;
         }
         
         .btn-debug[data-mode="Security Review"] {
             background-color: #b91c1c;
         }
         
-        .btn-debug[data-mode="Security Review"]:hover {
-            background-color: #991b1b;
-        }
-        
         .btn-debug[data-mode="Code Explanation"] {
             background-color: #9333ea;
         }
+
+        /* Pulsing animation for the debug button */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
         
-        .btn-debug[data-mode="Code Explanation"]:hover {
-            background-color: #7e22ce;
-        }
-
-        .divider {
-            border-top: 1px solid var(--divider-color);
-            margin: 1rem 0;
-        }
-
-        .footer {
-            font-size: 0.8rem;
-            text-align: center;
-            margin-top: 2rem;
-            color: #6c757d;
+        .pulse {
+            animation: pulse 1.5s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container py-4">
-        <!-- App Title -->
-        <div class="text-center app-title">
-            <h1>🌟 Code Guardian</h1>
-            <p class="lead">AI-Powered Debugging Assistant</p>
+    <!-- Title Frame -->
+    <div class="title-frame">
+        <h1>Code Guardian</h1>
+        <p>AI-Powered Debugging Assistant</p>
+    </div>
+
+    <!-- Main Content Frame -->
+    <div class="content-frame">
+        <!-- Decorative Header -->
+        <div class="header-decoration">
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
+            <div class="header-rect"></div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-area">
-                    <!-- Chat History -->
-                    <h5 class="mb-3">Debugging Conversation</h5>
-                    <div id="chat-history" class="chat-history">
-                        <div class="bot-message">
-                            <strong>🤖 Code Guardian:</strong><br>
-                            Welcome to Code Guardian! I'm here to help debug and improve your code. Here's how to use me:<br><br>
-                            1. Select your programming language from the dropdown<br>
-                            2. Choose a debugging mode based on your needs<br>
-                            3. Paste your code in the box below<br>
-                            4. Click the debug button to analyze<br><br>
-                            Ready to make your code better!
-                        </div>
-                    </div>
+        <!-- Chat History Section -->
+        <div class="history-section">
+            <div class="history-label">Debugging Conversation</div>
+            <div id="chat-history" class="chat-history">
+                <div class="bot-heading">🤖 Code Guardian:</div>
+                <div class="bot-message">Welcome to Code Guardian! I'm here to help debug and improve your code. Here's how to use me:
 
-                    <!-- Controls Area -->
-                    <div class="controls">
-                        <div class="row mb-3">
-                            <div class="col-md-6 mb-3 mb-md-0">
-                                <label for="language" class="form-label fw-bold">Programming Language:</label>
-                                <select id="language" class="form-select">
-                                    {% for language in languages %}
-                                    <option value="{{ language }}">{{ language }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="mode" class="form-label fw-bold">Debug Mode:</label>
-                                <select id="mode" class="form-select">
-                                    {% for mode in debug_modes %}
-                                    <option value="{{ mode }}">{{ mode }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+1. Select your programming language from the dropdown
+2. Choose a debugging mode based on your needs
+3. Paste your code in the box below or use the 'Load File' button
+4. Click 'DEBUG CODE' or press Ctrl+Enter to analyze
 
-                    <!-- Input Area -->
-                    <h5 class="mb-3">Your Code:</h5>
-                    <textarea id="code-input" class="form-control code-input" placeholder="Enter your code here..."></textarea>
-
-                    <!-- Action Buttons -->
-                    <div class="text-center my-4">
-                        <button id="clear-btn" class="btn btn-secondary me-3">Clear</button>
-                        <button id="debug-btn" class="btn btn-debug" data-mode="Standard Debugging">DEBUG CODE</button>
-                    </div>
-                </div>
+Ready to make your code better!</div>
+                <div class="separator">════════════════════════════════════════════════════════════════════════════════</div>
             </div>
         </div>
 
-        <!-- Status Bar -->
-        <div class="mt-3 text-end">
-            <small id="status-bar" class="text-muted">Ready to debug your code</small>
+        <!-- Language Selection Panel -->
+        <div class="control-panel d-flex align-items-center">
+            <span class="control-label">Programming Language:</span>
+            <select id="language" class="form-select form-select-sm" style="width: auto; font-size: 11px; margin-right: 15px;">
+                <option value="Python">Python</option>
+                <option value="Java">Java</option>
+                <option value="C++">C++</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="C#">C#</option>
+                <option value="Go">Go</option>
+                <option value="Rust">Rust</option>
+                <option value="PHP">PHP</option>
+                <option value="Swift">Swift</option>
+                <option value="TypeScript">TypeScript</option>
+                <option value="Kotlin">Kotlin</option>
+                <option value="Ruby">Ruby</option>
+            </select>
+
+            <button id="file-btn" class="btn btn-sm btn-primary ms-auto" style="font-size: 11px; background-color: var(--button-bg);">
+                📂 Load File
+            </button>
         </div>
 
-        <div class="footer">
-            <p>Powered by Google Gemini 1.5 Pro</p>
+        <!-- Debug Mode Selection Panel -->
+        <div class="control-panel d-flex align-items-center">
+            <span class="control-label">Debug Mode:</span>
+            <select id="debug-mode" class="form-select form-select-sm" style="width: auto; font-size: 11px;">
+                <option value="Standard Debugging">Standard Debugging</option>
+                <option value="Performance Analysis">Performance Analysis</option>
+                <option value="Security Review">Security Review</option>
+                <option value="Code Explanation">Code Explanation</option>
+            </select>
+        </div>
+
+        <!-- Code Input Section -->
+        <div class="input-section">
+            <div class="input-label">Your Code:</div>
+            <div class="entry-container">
+                <textarea id="code-input" class="code-input" placeholder="Enter your code here..."></textarea>
+            </div>
         </div>
     </div>
 
+    <!-- Button Frame -->
+    <div class="button-frame">
+        <!-- Decorative Footer -->
+        <div class="footer-decoration">
+            <div class="footer-rect" style="background-color: var(--button-bg);"></div>
+            <div class="footer-rect" style="background-color: var(--accent-color);"></div>
+            <div class="footer-rect" style="background-color: var(--button-bg);"></div>
+            <div class="footer-rect" style="background-color: var(--accent-color);"></div>
+            <div class="footer-rect" style="background-color: var(--button-bg);"></div>
+            <div class="footer-rect" style="background-color: var(--accent-color);"></div>
+            <div class="footer-rect" style="background-color: var(--button-bg);"></div>
+            <div class="footer-rect" style="background-color: var(--accent-color);"></div>
+        </div>
+
+        <!-- Button Container -->
+        <div class="button-container">
+            <button id="clear-btn" class="btn-action">Clear</button>
+            
+            <div class="btn-debug-container">
+                <button id="debug-btn" class="btn-debug pulse" data-mode="Standard Debugging">DEBUG CODE</button>
+            </div>
+            
+            <button id="save-btn" class="btn-action">💾 Save</button>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="status-bar">Ready to debug your code</div>
+
+    <!-- Required JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const codeInput = document.getElementById('code-input');
             const debugBtn = document.getElementById('debug-btn');
             const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const fileBtn = document.getElementById('file-btn');
             const chatHistory = document.getElementById('chat-history');
             const statusBar = document.getElementById('status-bar');
             const languageSelect = document.getElementById('language');
-            const modeSelect = document.getElementById('mode');
+            const modeSelect = document.getElementById('debug-mode');
+            
+            // Placeholder behavior
+            const placeholder = "Enter your code here...";
+            
+            codeInput.addEventListener('focus', function() {
+                if (this.value === placeholder) {
+                    this.value = '';
+                    this.style.color = 'var(--input-text)';
+                }
+            });
+            
+            codeInput.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.value = placeholder;
+                    this.style.color = 'gray';
+                }
+            });
+            
+            // Initialize placeholder
+            if (codeInput.value.trim() === '') {
+                codeInput.value = placeholder;
+                codeInput.style.color = 'gray';
+            }
 
             // Handle debug mode changes
             modeSelect.addEventListener('change', function() {
                 const mode = this.value;
                 debugBtn.setAttribute('data-mode', mode);
+                
+                // Reset pulsing
+                debugBtn.classList.remove('pulse');
+                void debugBtn.offsetWidth;
+                debugBtn.classList.add('pulse');
                 
                 // Update button text and color based on mode
                 if (mode === "Standard Debugging") {
@@ -273,10 +533,39 @@
                 }
             });
 
+            // Hover effects for debug button
+            debugBtn.addEventListener('mouseenter', function() {
+                const mode = modeSelect.value;
+                
+                // Hover colors for different modes
+                const hoverColors = {
+                    "Standard Debugging": "#10b981",
+                    "Performance Analysis": "#0ea5e9",
+                    "Security Review": "#dc2626",
+                    "Code Explanation": "#a855f7"
+                };
+                
+                this.style.backgroundColor = hoverColors[mode] || "#10b981";
+            });
+            
+            debugBtn.addEventListener('mouseleave', function() {
+                const mode = modeSelect.value;
+                
+                // Base colors for different modes
+                const baseColors = {
+                    "Standard Debugging": "#059669",
+                    "Performance Analysis": "#0369a1",
+                    "Security Review": "#b91c1c",
+                    "Code Explanation": "#9333ea"
+                };
+                
+                this.style.backgroundColor = baseColors[mode] || "#059669";
+            });
+
             // Handle debugging action
             debugBtn.addEventListener('click', async function() {
-                const code = codeInput.value.trim();
-                if (!code) {
+                const code = codeInput.value;
+                if (code === placeholder || code.trim() === '') {
                     statusBar.textContent = "Please enter some code first";
                     return;
                 }
@@ -286,11 +575,9 @@
 
                 // Add user message to chat
                 chatHistory.innerHTML += `
-                    <div class="divider"></div>
-                    <div class="user-message">
-                        <strong>🧑‍💻 You (${language}) - ${mode}:</strong><br>
-                        ${code}
-                    </div>
+                    <div class="user-heading">🧑‍💻 You (${language}) - ${mode}:</div>
+                    <div class="user-message">${code}</div>
+                    <div class="divider">────────────────────────────────────────────────────────────────────────────────</div>
                 `;
 
                 // Update status
@@ -298,9 +585,7 @@
                 
                 // Show loading message
                 chatHistory.innerHTML += `
-                    <div class="bot-message" id="loading-message">
-                        <strong>🤖 Bot:</strong> Analyzing your code (${mode})...
-                    </div>
+                    <div class="bot-heading" id="loading-message">🤖 Bot: Analyzing your code (${mode})...</div>
                 `;
                 chatHistory.scrollTop = chatHistory.scrollHeight;
 
@@ -328,11 +613,15 @@
 
                     // Add bot response
                     chatHistory.innerHTML += `
-                        <div class="bot-message">
-                            <strong>🤖 Bot:</strong><br>
-                            ${data.response}
-                        </div>
+                        <div class="bot-heading">🤖 Bot:</div>
+                        <div class="bot-message">${formatBotResponse(data.response)}</div>
+                        <div class="separator">════════════════════════════════════════════════════════════════════════════════</div>
                     `;
+
+                    // Apply syntax highlighting to code blocks
+                    document.querySelectorAll('.code-block').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
 
                     // Update status
                     statusBar.textContent = "Ready to debug more code";
@@ -344,23 +633,100 @@
                     }
 
                     chatHistory.innerHTML += `
-                        <div class="bot-message error">
-                            <strong>🤖 Bot:</strong><br>
-                            Error: Failed to process your request. Please try again.
-                        </div>
+                        <div class="bot-heading">🤖 Bot:</div>
+                        <div class="error-text">Error: Failed to process your request. Please try again.</div>
+                        <div class="separator">════════════════════════════════════════════════════════════════════════════════</div>
                     `;
+                    
                     statusBar.textContent = "Error occurred during analysis";
                     console.error('Error:', error);
                 }
 
                 // Scroll to bottom
                 chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                // Reset code input (optional)
+                // codeInput.value = placeholder;
+                // codeInput.style.color = 'gray';
             });
+
+            // Helper function to format bot responses
+            function formatBotResponse(htmlResponse) {
+                // The response is already pre-formatted with HTML tags from the server
+                // We can add additional processing here if needed
+                return htmlResponse;
+            }
 
             // Clear button functionality
             clearBtn.addEventListener('click', function() {
-                codeInput.value = '';
+                codeInput.value = placeholder;
+                codeInput.style.color = 'gray';
                 codeInput.focus();
+            });
+
+            // Save button functionality
+            saveBtn.addEventListener('click', function() {
+                const content = chatHistory.innerText;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                
+                const now = new Date();
+                const timestamp = now.toISOString().replace(/[:.]/g, '').substring(0, 15);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `debug_session_${timestamp}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                statusBar.textContent = "Session saved to file";
+            });
+
+            // File load button
+            fileBtn.addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.py,.java,.cpp,.js,.cs,.go,.rs,.php,.swift,.ts,.kt,.rb';
+                
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        codeInput.value = event.target.result;
+                        codeInput.style.color = 'var(--input-text)';
+                        
+                        // Auto-select language based on file extension
+                        const ext = file.name.split('.').pop().toLowerCase();
+                        const langMap = {
+                            'py': 'Python',
+                            'java': 'Java',
+                            'cpp': 'C++', 
+                            'h': 'C++',
+                            'js': 'JavaScript',
+                            'cs': 'C#',
+                            'go': 'Go',
+                            'rs': 'Rust',
+                            'php': 'PHP',
+                            'swift': 'Swift',
+                            'ts': 'TypeScript',
+                            'kt': 'Kotlin',
+                            'rb': 'Ruby'
+                        };
+                        
+                        if (langMap[ext]) {
+                            languageSelect.value = langMap[ext];
+                        }
+                        
+                        statusBar.textContent = `Loaded file: ${file.name}`;
+                    };
+                    reader.readAsText(file);
+                };
+                
+                input.click();
             });
 
             // Keyboard shortcuts
@@ -369,7 +735,26 @@
                 if (e.ctrlKey && e.key === 'Enter') {
                     debugBtn.click();
                 }
+                
+                // Ctrl+L to load file
+                if (e.ctrlKey && e.key === 'l') {
+                    fileBtn.click();
+                }
+                
+                // Ctrl+S to save conversation
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault(); // Prevent browser save
+                    saveBtn.click();
+                }
             });
+
+            // Start the pulsing effect
+            function startPulseEffect() {
+                debugBtn.classList.add('pulse');
+            }
+            
+            // Start pulsing after a short delay
+            setTimeout(startPulseEffect, 3000);
         });
     </script>
 </body>
