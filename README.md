@@ -1,79 +1,41 @@
-🧠 AI-Powered Code Debugger
-A desktop application that helps developers debug code using Google's Gemini AI. This simple and elegant GUI, built with Python and Tkinter, allows users to paste code, select a programming language, and get instant debugging feedback with fixes and explanations.
+# 🛡️ Code Guardian – AI-Powered Debugging Assistant
 
-🚀 Features
-🌐 Powered by Google Gemini (Generative AI)
+> 🌐 **Live Demo**: [Visit the Deployed App on Vercel](https://your-vercel-link-here.com)  
 
-🖥️ Beautiful Tkinter GUI with custom styling
+**Code Guardian** is a desktop application that helps developers debug code using **Google Gemini AI**. Featuring a beautifully styled **Tkinter GUI**, it allows users to paste code, select a programming language, and receive instant AI-generated debugging feedback with fixes and detailed explanations.
 
-🛠️ Multi-language support (Python, Java, C++, JavaScript, C#, Go, Rust)
+---
 
-🔍 AI-generated debugging output with explanations
+## 🚀 Features
 
-💬 Scrollable chat interface for viewing history
+- 🌟 **Powered by Google Gemini 1.5 Pro** (Generative AI)
+- 🎨 **Elegant Tkinter GUI** with custom styling and animations
+- 🌐 **Multi-language support**:
+  - Python, Java, C++, JavaScript, C#, Go, Rust, PHP, Swift, TypeScript, Kotlin, Ruby
+- 🧠 **Debugging Modes**:
+  - Standard Debugging
+  - Performance Analysis
+  - Security Review
+  - Code Explanation
+- 💬 **AI-generated feedback** with explanations and fix suggestions
+- 📜 **Scrollable chat interface** for conversation history
+- 💾 **Save & load debugging sessions**
+- 📂 **Load code from file** with automatic language detection
 
-🔧 Input placeholder and language selector
+---
 
-🧰 Tech Stack
-Python 3.8+
+## 🧰 Tech Stack
 
-Tkinter for GUI
+- Python 3.8+
+- Tkinter (GUI)
+- Google Generative AI (Gemini 1.5 Pro)
 
-google.generativeai for Gemini integration
+---
 
-📦 Installation
-Clone the Repository
+## 📦 Installation
 
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/ai-code-debugger.git
-cd ai-code-debugger
-Install Required Libraries
+### 1. Clone the Repository
 
-bash
-Copy
-Edit
-pip install google-generativeai
-Add Your API Key
-
-Replace the value of GOOGLE_API_KEY in the script with your own key from Google AI Studio.
-
-🔑 Get Your API Key
-Go to Google AI Studio
-
-Sign in with your Google account
-
-Create an API key from the API Access section
-
-Copy it and paste it in the code:
-
-Python
-Copy
-Edit
-GOOGLE_API_KEY = "your-api-key-here"
-▶️ Run the App
-bash
-Copy
-Edit
-python ai_debugger.py
-🧪 Supported Languages
-Python
-
-Java
-
-C++
-
-JavaScript
-
-C#
-
-Go
-
-Rust
-
-📸 UI Preview
-(Insert a screenshot here if you'd like)
-
-🛡️ Disclaimer
-This tool uses AI to assist with debugging and may not always provide correct or secure fixes. Always review the suggestions before using them in production code.
+```bash
+git clone https://github.com/your-username/code-guardian.git
+cd code-guardian
