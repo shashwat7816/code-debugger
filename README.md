@@ -1,6 +1,6 @@
 # 🛡️ Code Guardian – AI-Powered Debugging Assistant
 
-> 🌐 **Live Demo**: [Visit the Deployed App on Vercel](https://code-debugger-2ddukvvhw-shashwat-kashyaps-projects.vercel.app/)  
+> 🌐 **Live Demo**: [Visit the Deployed App on Vercel](https://code-debugger-shashwat-kashyaps-projects.vercel.app/)  
 
 **Code Guardian** is a desktop application that helps developers debug code using **Google Gemini AI**. Featuring a beautifully styled **Tkinter GUI**, it allows users to paste code, select a programming language, and receive instant AI-generated debugging feedback with fixes and detailed explanations.
 
